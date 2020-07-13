@@ -165,6 +165,7 @@
             </div>
         </div>
     </section>
+    
     <!--================End Checkout Area =================-->
 
     <!-- start footer Area -->

@@ -11,8 +11,7 @@ class brandController
 
     public function index()
     {
-      $_SESSION['error'] = 'plese provide your name';
-       unset($_SESSION['error']);        
+        
         $rows = $this->controller->getAll();
         $this->render('admin/brands/allbrands',compact('rows'));
     }
@@ -35,7 +34,8 @@ class brandController
             ];
           $this->controller->add($data);
           move_uploaded_file($_FILES['image']['tmp_name'], $target);
-          header('Location: ' . $_SERVER['HTTP_REFERER']);
+          $rows = $this->controller->getAll();
+          $this->render('admin/brands/allbrands',compact('rows'));
           }else{
             $data = [];
     $rows =  $this->controller->getAll();
@@ -47,40 +47,58 @@ class brandController
 
     public function delete($id){
       $this->controller->deleteModel($id);
-      header('Location: ' . $_SERVER['HTTP_REFERER']);
+      $rows = $this->controller->getAll();
+      $this->render('admin/brands/allbrands',compact('rows'));
 
     }
     public function edit($id){
-
+   
       $data = [
         'id' => $id
               ];
           $rows =  $this->controller->getById($id);
+         
+
 
       $this->render('admin/brands/editbrand',compact( 'data', 'rows'));
     }
     public function update($id){
-
       if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if(!empty($_FILES['image']['name'])){
+        $image =$_FILES['image']['name'];
+        $target = 'img/brand/'.basename($_FILES['image']['name']); 
 
        $data = [
 
          'title' => $_POST['title'],
-         'notes' => $_POST['notes']
+         'notes' => $_POST['notes'],
+         'image' => $target
            ];
 
-          $this->controller->edit($id,$data);
-          header('Location: ' . $_SERVER['HTTP_REFERER']);
+         $this->controller->edit($id,$data);
+          move_uploaded_file($_FILES['image']['tmp_name'], $target);
+          $rows = $this->controller->getAll();
+          $this->render('admin/brands/allbrands',compact('rows'));
+          }else{
+            $data = [
+
+              'title' => $_POST['title'],
+              'notes' => $_POST['notes']
+             
+                ];
+     
+              $this->controller->edit($id,$data);
+               $rows = $this->controller->getAll();
+               $this->render('admin/brands/allbrands',compact('rows'));
+          }
       }else{
-     $rows =  $this->controller->getById($id);
-      $data = [];
+        $rows = $this->controller->getAll();
+        $this->render('admin/brands/allbrands',compact('rows'));
 
-     $this->render('admin/brands/allbrands',$data);
+     
       }
+    }
 
-
-   }
-    
 public function render($view, $varible = [])
 { 
     ob_start();

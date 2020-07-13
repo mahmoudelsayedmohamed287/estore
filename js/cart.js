@@ -19,13 +19,13 @@ function Item(name, price, count,id,image) {
 
 function saveCart()
 {
-sessionStorage.setItem('cart', JSON.stringify(cart));
+localStorage.setItem('cart', JSON.stringify(cart));
 }
 
 function loadCart() {
-    cart = JSON.parse(sessionStorage.getItem('cart'));
+    cart = JSON.parse(localStorage.getItem('cart'));
   }
-  if (sessionStorage.getItem("cart") != null) {
+  if (localStorage.getItem("cart") != null) {
     loadCart();
   }
 
@@ -109,13 +109,6 @@ return obj;
 })();
 
 
-function add(name,price,id,image)
-{
-    shoppingCart.addItemToCart(name,price, 1, id,image);
-  
-//   dispalyItemInCart()
-}
-
 
 
 $('.addItemTocart').click(function(){
@@ -132,9 +125,13 @@ $('.addItemTocart').click(function(){
 
 
 function dispalyItemInCart(){
-    dataInStorage = JSON.parse(sessionStorage.getItem('cart') );
+    dataInStorage = JSON.parse(localStorage.getItem('cart') );
     
     var output = "";
+    var productIds = [] ;
+    var productPrices = [] ;
+    var productQnty = [] ;
+    var productName = [];
     var checkOutput = "";
      for(i in dataInStorage){
          var total = dataInStorage[i].price * dataInStorage[i].count;
@@ -170,7 +167,10 @@ function dispalyItemInCart(){
                               </tr>`;
 
 
-
+      productIds.push(dataInStorage[i].id);
+      productPrices.push(dataInStorage[i].price);
+      productQnty.push(dataInStorage[i].count);
+      productName.push(dataInStorage[i].name);
       checkOutput+=  `
                   <li><a href="#">${dataInStorage[i].name}<span class="middle">x${dataInStorage[i].count} </span> <span class="last">$${dataInStorage[i].price}</span></a></li>
       `
@@ -260,7 +260,7 @@ function dispalyItemInCart(){
       </td>
       <td>
           <div class="checkout_btn_inner d-flex align-items-center">
-              <a class="gray_btn" href="#">Continue Shopping</a>
+              <a class="gray_btn" href="Catagory">Continue Shopping</a>
             
           </div>
       </td>
@@ -268,7 +268,7 @@ function dispalyItemInCart(){
       `;
       checkOutput+= `
       <ul class="list list_2">
-          <li><a href="#">Subtotal <span>${shoppingCart.totalCountCart()}</span></a></li>
+          <li><a href="#">Subtotal <span> $${shoppingCart.totalCountCart()} USD</span></a></li>
           <li><a href="#">Shipping <span>Flat rate: $50.00 static price </span></a></li>
           <li><a href="#">Total <span>${shoppingCart.totalCountCart()}</span></a></li>
       </ul>
@@ -278,10 +278,12 @@ function dispalyItemInCart(){
       $("#productCheckOut").html(checkOutput);
       $("#cartContentt").html(output);
       $('.bag-total').text(shoppingCart.totalCount());
-      $('.totalCart').text(shoppingCart.totalCountCart());
-      $('#checkouttotal').text(shoppingCart.totalCountCart());
-
-      
+      $('.totalCart').text(shoppingCart.totalCountCart() + 'USD');
+      $('#checkouttotal').val(shoppingCart.totalCountCart());
+      $('#productIds').val(productIds);
+      $('#productPrices').val(productPrices);
+      $('#productQnty').val(productQnty);
+      $('#productName').val(productName);
     
     }
 
@@ -326,6 +328,6 @@ dispalyItemInCart()
 // 	var id    = this.date('id');
 // 	addButton[i].addEventListener("click", obj.addItemToCart(name,price, 1, id));
 // }
-console.log(shoppingCart.totalCount(cart));
+
 });
 

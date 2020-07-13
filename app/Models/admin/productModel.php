@@ -1,13 +1,14 @@
 <?php
 
 include 'app/libaray/DB.php';
-
+include 'app/libaray/connection.php';
 
 class productModel{
     private $db;
 public function __construct(){
 
     $this->db = new Database();
+    $this->dbh  = connection::getInstance();
 
 }
 public function getAll(){
@@ -37,52 +38,20 @@ public function getById($id)
 }
 public function edit($id,$data)
     {
+
+  return   $this->dbh->updateCustom('products',$data,$id)->count();   
+   
     
-            $this->db->query("UPDATE products SET 
-                
-                            title = :title,
-                            price_before = :price_before,
-                            price_after =:price_after,
-                            description =:description,
-                            specs = :specs,
-                            notes= :notes,
-                            status =:status,
-                            attrubites =:attributes,
-                            quantity =:quantity,
-                            small_description =:smalldescription,
-                            image = :image,
-                            latest =:latest
-                            WHERE id = :id ");
+}
 
-                $this->db->bind(':title', $data['title']);
-                $this->db->bind(':price_before', $data['price_before']);
-                $this->db->bind(':price_after', $data['price_after']);
-                $this->db->bind(':description', $data['description']);
-                $this->db->bind(':specs', $data['specs']);
-                $this->db->bind(':notes', $data['notes']);
-                $this->db->bind(':status', $data['status']);
-                $this->db->bind(':attributes', $data['attributes']);
-                $this->db->bind(':quantity', $data['quantity']);
-                $this->db->bind(':smalldescription', $data['small_description']);
-                $this->db->bind(':image', $data['img']);
-                $this->db->bind(':latest', $data['order']);
-                $this->db->bind(':id', $id);
-
-             if ($this->db->execute()){
-                return true;
-            }else {
-                return false;
-            }
-        
-    }
 
 public function add($data){
     
 		
     $this->db->query("INSERT INTO products(
-                title, price_before, price_after, description,specs,notes,status,attrubites,quantity,small_description,image,latest,image_group)
+                title, price_before, price_after, description,specs,notes,status,attrubites,quantity,small_description,category_id,image,latest,image_group)
          values
-                (:title, :price_before, :price_after, :description,:specs,:notes,:status,:attributes,:quantity,:small_description,:image,:latest,:image_group)");
+                (:title, :price_before, :price_after, :description,:specs,:notes,:status,:attributes,:quantity,:small_description,:category,:image,:latest,:image_group)");
                 
     $this->db->bind(':title', $data['title']);
     $this->db->bind(':price_before', $data['price_before']);
@@ -94,6 +63,7 @@ public function add($data){
     $this->db->bind(':attributes', $data['attributes'] );
     $this->db->bind(':quantity', $data['quantity'] );
     $this->db->bind(':small_description', $data['smalldescription']);
+    $this->db->bind(':category', $data['category']);
     $this->db->bind(':image', $data['img']);
     $this->db->bind(':latest', $data['order']);
     $this->db->bind(':image_group', $data['images']);
@@ -106,6 +76,12 @@ public function add($data){
 
 
 
+}
+
+public function getCat(){
+     $this->db->query("SELECT * FROM categories");
+     $cat = $this->db->All();
+     return $cat;
 }
 
 

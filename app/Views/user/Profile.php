@@ -24,10 +24,42 @@
       <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Account settings</a>
     </div>
   </div>
-  <?= $user->id ?>
+
   <div class="col-4">
     <div class="tab-content" id="v-pills-tabContent">
-      <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">My purchases</div>
+      <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">My purchases
+
+      <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Order Number</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+      <?php foreach($settings['prusher'] as $order ) :?>
+      <tr>
+             <td><a href="<?php echo URL ?>product/Product/order/<?php echo $order->id?>"><?php echo  $order->order_number?></a></td>
+             <td>On Shipping</td>
+             </tr>
+        <?php endforeach; ?>
+         </tbody>
+        </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
       <div class="tab-pane fade " id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
         <div class="row" style="background:aliceblue; padding:20px">
                 <div class="section-top-border">
@@ -48,7 +80,21 @@
             </div>
 
       </div>
-      <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">Favorites lists</div>
+      <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+        
+      
+      Favorites lists
+
+      <div id="whichListContent">
+
+
+
+      </div>
+
+
+
+
+      </div>
       <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab"> 
             <div class="row" style="background:aliceblue; padding:20px">
                 <div class="section-top-border">
@@ -179,5 +225,12 @@
     </div>
 </div>
 </div>
+
+
+
+
+
+
+
 
 

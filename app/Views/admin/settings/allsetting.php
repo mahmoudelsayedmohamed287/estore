@@ -31,7 +31,7 @@
                         
                       
                         <td>
-                            <a  href="<?=  URL?>admin/setting/edit/<?=$row->id?>" class="edit open-modal" data-toggle="modal" >Edit</a>  
+                            <a  href="<?=  URL?>admin/setting/edit/<?=$row->id?>" >Edit</a>  
                             
                             
                             

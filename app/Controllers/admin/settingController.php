@@ -48,22 +48,23 @@ class settingController
                 'favicon' => $_POST['favicon'],
                 'notes' => $_POST['notes'],
                 'address_2' => $_POST['address_2'],
-                'time_of_work' => $_POST['time_of_work']
+                'time_of_work' => $_POST['time_of_work'],
+                'date' => $_POST['date']
                 
                   ];
   
-           $this->controller->edit($id,$data) ;
-           header('Location: ' . $_SERVER['HTTP_REFERER']);
+          if( $this->controller->edit($id,$data)){
+         $this->index();
         
         }else{
-       $rows =  $this->controller->getById($id);
-        $data = [];
+            $this->index();
   
-       $this->render('admin/settings/allsetting',$data);
+    
         }
   
   
      }
+    }
 
 
     

@@ -40,21 +40,37 @@
 						<h2>$<?= $product->price_after?></h2>
 						<ul class="list">
 							<li><a class="active" href=""><span>Category</span> : <?= $category->title?></a></li>
-							<li><a href="#"><span>Availibility</span> :<?php ($product->status > 0) ? $satuts = 'In Stock' :  $satuts = 'out of stok'?>  <?=$satuts ?> </a></li>
+							<li><a href="#"><span>Availibility</span> :<?php ($product->quantity > 0) ? $satuts = 'In Stock' :  $satuts = 'out of stok'?>  <?=$satuts ?> </a> |<?= $product->quantity?> item found</li>
 						</ul>
 						<p> <?= $product->small_description?></p>
-						<div class="product_count">
+						<!-- <div class="product_count">
 							<label for="qty">Quantity:</label>
-							<input type="text" name="qty" id="sst" maxlength="" value="<?= $product->quantity?>" title="Quantity:" class="input-text qty">
+							<input type="text" name="qty" id="sst" maxlength="" value="1" title="Quantity:" class="input-text qty">
 							<button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
 							 class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
 							<button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
 							 class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
-						</div>
+						</div> -->
+						
+
+
+
 						<div class="card_area d-flex align-items-center">
-							<a onClick ="cartAction('add',<?= $product->id ?>,'added')" class="primary-btn" href="#">Add to Cart</a>
-							<a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
-							<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
+							<a  class="primary-btn addItemTocart" 
+							          data-id="<?= $product->id?>" 
+										data-name="<?= $product->title?>"
+										data-price="<?= $product->price_after ?>"
+										data-image="<?= URL .$product->image?>"
+							>Add to Cart</a>
+							<!-- <a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a> -->
+							        <a href="" class="social-info addItemToWhichList"
+										data-id="<?= $product->id?>" 
+										data-name="<?= $product->title?>"
+										data-price="<?= $product->price_after ?>"
+										data-image="<?= URL .$product->image?>">
+											<span class="lnr lnr-heart"></span>
+											<p class="hover-text"></p>
+										</a>
 						</div>
 					</div>
 				</div>
@@ -74,10 +90,10 @@
 					<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
 					 aria-selected="false">Specification</a>
 				</li>
-				<li class="nav-item">
+				<!-- <li class="nav-item">
 					<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
 					 aria-selected="false">Comments</a>
-				</li>
+				</li> -->
 				<li class="nav-item">
 					<a class="nav-link active" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review"
 					 aria-selected="false">Reviews</a>
@@ -91,15 +107,17 @@
 					<div class="table-responsive">
 						<table class="table">
 							<tbody>
+								<?php foreach(json_decode($product->attrubites) as $key => $value):?>
 								<tr>
 									<td>
-										<h5>Width</h5>
+										<h5><?php echo $key ?></h5>
 									</td>
 									<td>
-										<h5>128mm</h5>
+										<h5><?php echo $value?></h5>
 									</td>
 								</tr>
-								<tr>
+								<?php endforeach; ?>
+								<!-- <tr>
 									<td>
 										<h5>Height</h5>
 									</td>
@@ -154,14 +172,14 @@
 									<td>
 										<h5>60pcs</h5>
 									</td>
-								</tr>
+								</tr> -->
 							</tbody>
 						</table>
 					</div>
 				</div>
 				<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
 					<div class="row">
-						<div class="col-lg-6">
+						<!-- <div class="col-lg-6">
 							<div class="comment_list">
 								<div class="review_item">
 									<div class="media">
@@ -239,7 +257,7 @@
 									</div>
 								</form>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				<div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
@@ -249,13 +267,13 @@
 								<div class="col-6">
 									<div class="box_total">
 										<h5>Overall</h5>
-										<h4>4.0</h4>
-										<h6>(03 Reviews)</h6>
+										<!-- <h4>4.0</h4> -->
+										<h6>(<?php echo count($reviews)?> Reviews)</h6>
 									</div>
 								</div>
 								<div class="col-6">
 									<div class="rating_list">
-										<h3>Based on 3 Reviews</h3>
+										<!-- <h3>Based on 3 Reviews</h3>
 										<ul class="list">
 											<li><a href="#">5 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
 													 class="fa fa-star"></i><i class="fa fa-star"></i> 01</a></li>
@@ -267,10 +285,11 @@
 													 class="fa fa-star"></i><i class="fa fa-star"></i> 01</a></li>
 											<li><a href="#">1 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
 													 class="fa fa-star"></i><i class="fa fa-star"></i> 01</a></li>
-										</ul>
+										</ul> -->
 									</div>
 								</div>
 							</div>
+							<?php foreach($reviews as $review) :?>
 							<div class="review_list">
 								<div class="review_item">
 									<div class="media">
@@ -278,58 +297,35 @@
 											<img src="img/product/review-1.png" alt="">
 										</div>
 										<div class="media-body">
+											<?php 
+											if($review->user_id == $_SESSION['id']){
+												echo 'Your Review' . $review->rating;
+												echo '<h4>'.$_SESSION['name'].'</h4>';
+											}
+											?>
 											<h4>Blake Ruiz</h4>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
+										<?php echo $review->rating;
+										$starFull  = '<i class="fa fa-star"></i>';
+										$starEmpty = '<i class="fa fa-star-o" aria-hidden="true"></i>';
+										$straCount = 5;
+										$countEmptyStars = $straCount - $review->rating;
+										?>
+										
+								<?php echo str_repeat($starFull,intval($review->rating))?>
+								<?php echo str_repeat($starEmpty,intval($countEmptyStars))?>		
+
 										</div>
 									</div>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-										commodo</p>
+									<p>
+										<?php echo $review->review?>
+									</p>
 								</div>
-								<div class="review_item">
-									<div class="media">
-										<div class="d-flex">
-											<img src="img/product/review-2.png" alt="">
-										</div>
-										<div class="media-body">
-											<h4>Blake Ruiz</h4>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-										</div>
-									</div>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-										commodo</p>
-								</div>
-								<div class="review_item">
-									<div class="media">
-										<div class="d-flex">
-											<img src="img/product/review-3.png" alt="">
-										</div>
-										<div class="media-body">
-											<h4>Blake Ruiz</h4>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-										</div>
-									</div>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-										commodo</p>
-								</div>
+								<?php endforeach; ?>
+							
 							</div>
 						</div>
 						<div class="col-lg-6">
-							<div class="review_box">
+							<!-- <div class="review_box">
 								<h4>Add a Review</h4>
 								<p>Your Rating:</p>
 								<ul class="list">
@@ -365,7 +361,7 @@
 										<button type="submit" value="submit" class="primary-btn">Submit Now</button>
 									</div>
 								</form>
-							</div>
+							</div> -->
 						</div>
 					</div>
 				</div>
@@ -389,19 +385,21 @@
 			<div class="row">
 				<div class="col-lg-9">
 					<div class="row">
+					<?php foreach($deals as $deal):?>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
 								<a href="#"><img src="img/r1.jpg" alt=""></a>
 								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
+									<a href="#" class="title"><?php echo $deal->products_name?></a>
 									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
+										<h6><?php echo $deal->products_after?></h6>
+										<h6 class="l-through"><?php echo $deal->products_before?></h6>
+										</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+				<?php endforeach;?>
+								<!-- <div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
 								<a href="#"><img src="img/r2.jpg" alt=""></a>
 								<div class="desc">
@@ -496,7 +494,8 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
+							
 					</div>
 				</div>
 				<div class="col-lg-3">

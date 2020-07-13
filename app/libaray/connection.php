@@ -9,6 +9,8 @@ class connection
   // this data blow form Config/Congig.php file 
 private static  $_instance = null ;
 
+    //declare all internal (private) variables, only accessbile within this class
+
 private 
 $db_name = DB_NAME,
 $db_host = DB_HOST,
@@ -129,7 +131,7 @@ private function action($action, $table, $where = [])
 }
 
 
-public function get($table, $where)
+public function get($table, $where = [])
 {
  return  $this->action("SELECT * ", $table, $where);
 }
@@ -291,10 +293,18 @@ public function last($table)
 
 
 
+
 public function updatenative($id,$data){
   $sql = "UPDATE customers SET fname=:fname, lname=:lname, phone=:phone WHERE id= $id ";
   $stmt= $this->_pdo->prepare($sql);
   $stmt->execute($data);
+}
+
+public function updateProductQnty($id,$count){
+  
+  $sql = "UPDATE products SET quantity = quantity - $count  WHERE id = $id ";
+  $stmt= $this->_pdo->prepare($sql);
+  $stmt->execute();
 }
 
 public function updatenativeAddress($id,$data){

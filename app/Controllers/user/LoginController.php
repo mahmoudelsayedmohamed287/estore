@@ -49,9 +49,9 @@ class LoginController
                         $_SESSION['id']    = $user->id;
                         $_SESSION['name']  = $user->fname;
                         $_SESSION['password']  = $user->password;
-                      
-                        
-                       
+                        $_SESSION['role']  = $user->role;
+
+
                           if(isset($_POST['remember'])){ 
                             setcookie("member_login", $user->uinque_id, time()+86400, "/");
                             

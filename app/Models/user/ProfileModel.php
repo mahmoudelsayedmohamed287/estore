@@ -33,6 +33,12 @@ class ProfileModel
         
     }
 
+
+    public function getUserPrusher()
+    {
+      return  $this->dbh->get('orders', ['cust_id', '=', $_SESSION['id']])->results();
+    }
+
     public function retriveMenu()
     {
     $menus =   $this->dbh->last('menu');
@@ -65,4 +71,17 @@ class ProfileModel
   {
       $this->dbh->updatenativeAddress($id,$data);
   }
+
+  public function saveProductReview($filed)
+  {
+      $this->dbh->insert('reviews', $filed);
+  }
+
+  public function getReview($id)
+  {
+      return $this->dbh->get('reviews', ['user_id', '=', $id])->results();
+  }
+  
+  
+  
 }

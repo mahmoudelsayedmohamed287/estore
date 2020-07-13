@@ -15,29 +15,27 @@ use commenMthodesModel;
       return $this->dbh->all('products','ASC', "brand_id =" . $brand_id);
     
     }
-   
-      public function getProductColor()
-      {
-       $a = $this->dbh->getAttrbuite('$.color');
-      var_dump($a);
 
-       
-      }
-      public function retriveProducts()
+      public function retriveProducts($filter = null)
       {
-        return $this->dbh->all('products');
+      
+        // return $this->dbh->all('products');
+        $stm = "SELECT * FROM products WHERE quantity > 0 ";
+        if($filter !== null){
+          $stm .= " AND title LIKE '$filter%'  " ;
+        }
+        
+        return $this->dbh->getAll($stm);
 
       }
     
-      public function getProductPrice($price)
+      
+     
+
+
+      public function filterProducts($sqlstatment)
       {
-        $stm = $this->dbh->all('products','ASC', "price =" . $price);
-        return $stm;
-      }
-      public function getProductTag($tag_id)
-      {
-       return  $this->dbh->all('products','ASC', "tag_id =" . $tag_id);
-       
+        return $this->dbh->queryBuilder($sqlstatment);
       }
      
 

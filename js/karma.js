@@ -19,7 +19,7 @@
 //            success:function(data){
 //               // msg = 'item added successfuly';
 //             // $('.alert-success').html(msg);
-//             console.log(data);
+//             // console.log(data);
             
 //            },
 //            error:function(){
@@ -31,7 +31,31 @@
 
     
 //   }
+
+  // $('.addItemTocart').click(function(){
+  //   cartAction('add', $(this).data('id'), 'added to cart');
+  // });
 $(document).ready(function(){
+
+ $('#pay').click(function(){
+     $.ajax({
+         url:'Checkout/CheckoutStatus',
+         method:"POST",
+         data:{action:'order'},
+         success:function(data){
+
+         localStorage.removeItem('cart');
+         window.location = 'Product/confirm';
+        
+        
+         },
+         error:function(data){
+             alert(data);
+             console.log(data);
+         }
+     })
+  
+ })
 
                 function filter_data()
                 {
@@ -39,14 +63,14 @@ $(document).ready(function(){
                     var upperValue =   document.getElementById('upper-value').innerText;
                     var brands     =   get_filter('brand');
                     var categorys  =   get_filter('tag');
+
                     
                     $.ajax({
                         url:'Catagory/search',
                         method:"POST",
                         data:{lowerValue:lowerValue, upperValue :upperValue , brands:brands, categorys :categorys,action:'search' },
                         success:function(data){
-                         console.log(data)
-                         $('.category-list').html(data);
+                         $('.category-list .row').html(data);
                         },
                         error:function(error){
                             console.log(error);
@@ -60,6 +84,70 @@ $(document).ready(function(){
                 $('.common_selector').click(function(){
                     filter_data();
                 });
+                $('#sortBy').change(function(){
+                    $.ajax({
+                        url:'Catagory/search',
+                        method:'POST',
+                        data:{sorter:this.value,action:'search'},
+                        success:function(data){
+                            
+                            $('.category-list .row').html(data);
+                            
+                        },
+                        error:function(error){
+                            console.log(error);
+                        }
+                    })
+                  
+                });
+                $('#show').change(function(){
+                    $.ajax({
+                        url:'Catagory/search',
+                        method:'POST',
+                        data:{show:this.value,action:'search'},
+                        success:function(data){
+                            
+                            $('.category-list .row').html(data);
+                            
+                        },
+                        error:function(error){
+                            console.log(error);
+                        }
+                    })
+                  
+                });
+                
+                $('#s').on('keyup', function (e){
+                    // alert($('#s').val());
+                    e.preventDefault();
+                    $.ajax({
+                        url:'Catagory/serachByProduct',
+                        method:'GET',
+                        data:{s:$('#s').val()},
+                        success:function(data){
+                            
+                            $('.category-list .row').html(data);
+                            
+                            
+                        },
+                        error:function(error){
+                            console.log(error);
+                        }
+                    })
+                  
+                });
+
+
+
+
+
+
+
+
+
+
+
+                // abstreact function 
 
                     function get_filter(class_name)
                     {
@@ -70,6 +158,8 @@ $(document).ready(function(){
                         return filter;
                     }
                     
+
+                   
 
 
                    

@@ -15,11 +15,7 @@
         </div>
     </section>
     <!-- End Banner Area -->
-    <?php  if(isset($_POST['msg'])) {?>
-<div class="alert alert-success" role="alert">
-   
-</div>
-<?php } ?>
+  
     <!--================Cart Area =================-->
     <section class="cart_area" id="cart-item">
     <button type="button" class="clear-cart">Clear</button>

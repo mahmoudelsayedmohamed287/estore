@@ -20,20 +20,26 @@ class categoryController{
 //this method to add category in database
 public function add(){
  
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){  
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+      $image = $_FILES['mainimg']['name'];
+      $target = 'img/category/'.basename($_FILES['mainimg']['name']);
+       
       $data = [
         
         'title' => $_POST['title'],
         'notes' => $_POST['notes'],
-        'description' => $_POST['description']
+        'description' => $_POST['description'],
+        'image' => $target
         
           ];
-        $this->controller->add($data);
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
+       if( $this->controller->add($data)){
+        move_uploaded_file($_FILES['mainimg']['tmp_name'], $target);
+        $rows = $this->controller->getAll();
+      $this->render('admin/categories/allcategory',compact('rows'));
+       }
         }else{
-          $data = [];
-  $rows =  $this->controller->getAll();
-  $this->render('admin/categories/allcategory', compact('rows'));
+          $rows = $this->controller->getAll();
+          $this->render('admin/categories/allcategory',compact('rows'));
   
         }
       }
@@ -41,7 +47,8 @@ public function add(){
     public function delete($id)
     {
      $this->controller->deleteModel($id);
-     header('Location: ' . $_SERVER['HTTP_REFERER']);
+     $rows = $this->controller->getAll();
+     $this->render('admin/categories/allcategory',compact('rows'));
     }
 // this method to edit category from database 
     public function edit($id)
@@ -57,29 +64,53 @@ public function add(){
     public function update($id){
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+          if(!empty($_FILES['mainimg']['name'])){
+          $image = $_FILES['mainimg']['name'];
+          $target = 'img/category/'.basename($_FILES['mainimg']['name']);
   
          $data = [
   
            'title' => $_POST['title'],
            'notes' => $_POST['notes'],
-           'descrip' => $_POST['description']
+           'descrip' => $_POST['description'],
+           'image' =>$target
              ];
+             
+           $this->controller->edit($id,$data);
+            move_uploaded_file($_FILES['mainimg']['tmp_name'], $target);
+            $rows = $this->controller->getAll();
+            $this->render('admin/categories/allcategory',compact('rows'));
+
+            }else{
+
+
+              $data = [
   
-            $this->controller->edit($id,$data);
-            header('Location: ' . $_SERVER['HTTP_REFERER']);
-                     
-  
-  
-  
+                'title' => $_POST['title'],
+                'notes' => $_POST['notes'],
+                'descrip' => $_POST['description']
+                  ];
+                 
+       
+                $this->controller->edit($id,$data);
+                 $rows = $this->controller->getAll();
+                 $this->render('admin/categories/allcategory',compact('rows'));
+
+
+            }
+        
         }else{
-       $rows =  $this->controller->getById($id);
-        $data = [];
   
-       $this->render('admin/categories/allcategory',$data);
+          $rows = $this->controller->getAll();
+          $this->render('admin/categories/allcategory',compact('rows'));
+
+     
+      }
         }
+      
   
   
-     }
+     
     public function render($view, $varible = [])
 { 
     ob_start();

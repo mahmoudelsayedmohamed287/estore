@@ -22,14 +22,17 @@ class ProfileController
        
         $user = $this->model->getALLDataAboutUser(isset($_SESSION['email'] ) ? $_SESSION['email'] : '');
         $user_address = $this->model->getUserId($user->id);
-        // need torefactory
+        $prusher = $this->model->getUserPrusher(); 
+
         $settings = [
             'user' => $user,
-            'address' => $user_address
+            'address' => $user_address,
+            'prusher' => $prusher
 
           ];
-
-     return  $this->model->render('user\profile' , [$user, $user_address ],$settings);
+          
+// die(print_r($prusher));
+     return  $this->model->render('user\profile' , [$user, $user_address],$settings);
 
    
     }
@@ -69,6 +72,20 @@ public function updateUserAddress()
         'extra'      => $_POST['user_extra']
        ]);
        return  header('Location: ' . $_SERVER['HTTP_REFERER']);
+    }
+}
+
+public function saveReview($productId)
+{
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+       $review = $_POST['review_num'];
+       $review_text = $_POST['review_text'];
+       $productReview = ['user_id' => $_SESSION['id'],
+        'product_id' => $productId, 'rating' => $review ,
+         'review' => $review_text  ];
+       $this->model->saveProductReview($productReview);
+       return  $this->index();
     }
 }
 

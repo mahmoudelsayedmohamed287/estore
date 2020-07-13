@@ -15,8 +15,25 @@ class checkoutModel
 
     public function getALLDataAboutUserById($id)
     {
-     return $this->dbh->queryBuilder3("SELECT * FROM customers LEFT JOIN address on address.cust_id = customers.id where customers.id =  $id");
+     return $this->dbh->queryBuilder3("SELECT * FROM customers LEFT JOIN address on address.customers_id = customers.id where customers.id =  $id");
     }
+    public function createOrder($fileds)
+    { 
+        return $this->dbh->insert('orders',$fileds);
+        
+    }
+
+    public function getAllProductById($id)
+    {
+        return $this->dbh->get('products', ['id' , '=', $id])->first();
+    }
+
+    public function UpdateProductQuantity($id, $Quantity)
+    {
+        return $this->dbh->updateProductQnty($id, $Quantity);
+    }
+
+   
 
     
 

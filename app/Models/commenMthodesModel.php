@@ -7,6 +7,9 @@ trait commenMthodesModel
 {
     private $template = 'template\default';
 
+
+
+    
     public function render($view, $varible = [], $settings = [])
     {
         

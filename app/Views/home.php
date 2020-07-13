@@ -1,4 +1,25 @@
 	<!-- start banner Area -->
+	<?php 
+
+						foreach($footer as $foot ){
+						 
+						}
+						
+						$oldDate =  new DateTime($foot->Date);
+					
+						$days = $oldDate->format("d");
+						$hours = $oldDate->format("h");
+						$minutes = $oldDate->format("i");
+						$seconds = $oldDate->format("s");
+						
+						?>
+						<input type="hidden" value="<?php echo $days?>" id="days">
+						<input type="hidden" value="<?php echo $hours?>" id="hours">
+						<input type="hidden" value="<?php echo $minutes?>" id="minutes">
+						<input type="hidden" value="<?php echo $seconds?>" id="seconds">
+
+					
+						
 	<section class="banner-area">
 		<div class="container">
 			<div class="row fullscreen align-items-center justify-content-start">
@@ -48,9 +69,8 @@
 		</div>
 	</section>
 	<!-- End banner Area -->
-
-	<!-- start features Area -->
-	<section class="features-area section_gap">
+<!-- start features Area -->
+<section class="features-area section_gap">
 		<div class="container">
 			<div class="row features-inner">
 				<!-- single features -->
@@ -104,61 +124,19 @@
 			<div class="row justify-content-center">
 				<div class="col-lg-8 col-md-12">
 					<div class="row">
-						<div class="col-lg-8 col-md-8">
-							<div class="single-deal">
-								<div class="overlay"></div>
-								<img class="img-fluid w-100" src="img/category/c1.jpg" alt="">
-								<a href="img/category/c1.jpg" class="img-pop-up" target="_blank">
-									<div class="deal-details">
-										<h6 class="deal-title">Sneaker for Sports</h6>
-									</div>
-								</a>
-							</div>
-						</div>
+							<?php foreach($allCategory as $category):?>
 						<div class="col-lg-4 col-md-4">
 							<div class="single-deal">
 								<div class="overlay"></div>
-								<img class="img-fluid w-100" src="img/category/c2.jpg" alt="">
+								<img class="img-fluid w-100" src="<?php echo $category->image?>" alt="">
 								<a href="img/category/c2.jpg" class="img-pop-up" target="_blank">
 									<div class="deal-details">
-										<h6 class="deal-title">Sneaker for Sports</h6>
+										<h6 class="deal-title"><?php echo $category->title?></h6>
 									</div>
 								</a>
 							</div>
 						</div>
-						<div class="col-lg-4 col-md-4">
-							<div class="single-deal">
-								<div class="overlay"></div>
-								<img class="img-fluid w-100" src="img/category/c3.jpg" alt="">
-								<a href="img/category/c3.jpg" class="img-pop-up" target="_blank">
-									<div class="deal-details">
-										<h6 class="deal-title">Product for Couple</h6>
-									</div>
-								</a>
-							</div>
-						</div>
-						<div class="col-lg-8 col-md-8">
-							<div class="single-deal">
-								<div class="overlay"></div>
-								<img class="img-fluid w-100" src="img/category/c4.jpg" alt="">
-								<a href="img/category/c4.jpg" class="img-pop-up" target="_blank">
-									<div class="deal-details">
-										<h6 class="deal-title">Sneaker for Sports</h6>
-									</div>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6">
-					<div class="single-deal">
-						<div class="overlay"></div>
-						<img class="img-fluid w-100" src="img/category/c5.jpg" alt="">
-						<a href="img/category/c5.jpg" class="img-pop-up" target="_blank">
-							<div class="deal-details">
-								<h6 class="deal-title">Sneaker for Sports</h6>
-							</div>
-						</a>
+					<?php endforeach;?>
 					</div>
 				</div>
 			</div>
@@ -195,10 +173,15 @@
 								</div>
 								<div class="prd-bottom">
 
-									<a href="" class="social-info">
-										<span class="ti-bag"></span>
-										<p class="hover-text">add to bag</p>
-									</a>
+								<a class="social-info addItemTocart" 
+										data-id="<?= $latest->id?>?>" 
+										data-name="<?= $latest->title?>"
+										data-price="<?= $latest->price_after?> ?>"
+										data-image="<?= URL .$latest->image?>">
+											<span class="ti-bag"></span>
+											<p class="hover-text">add to bag</p>
+											
+										</a>
 									<a href="" class="social-info">
 										<span class="lnr lnr-heart"></span>
 										<p class="hover-text">Wishlist</p>
@@ -207,10 +190,10 @@
 										<span class="lnr lnr-sync"></span>
 										<p class="hover-text">compare</p>
 									</a>
-									<a href="" class="social-info">
-										<span class="lnr lnr-move"></span>
-										<p class="hover-text">view more</p>
-									</a>
+									<a href="<?= URL . 'product/Product/'. $latest->id?>" class="social-info">
+											<span class="lnr lnr-move"></span>
+											<p class="hover-text">view more</p>
+										</a>
 								</div>
 							</div>
 						</div>
@@ -245,7 +228,7 @@
 					<!-- single product -->
 					<div class="col-lg-3 col-md-6">
 						<div class="single-product">
-							<img class="img-fluid" src="img/product/<?php echo $row->image?>" alt="">
+							<img class="img-fluid" src="<?php echo $row->image?>" alt="">
 							<div class="product-details">
 								<h6><?php echo $row->title ?></h6>
 								<div class="price">
@@ -254,10 +237,15 @@
 								</div>
 								<div class="prd-bottom">
 
-									<a href="" class="social-info">
-										<span class="ti-bag"></span>
-										<p class="hover-text">add to bag</p>
-									</a>
+								<a class="social-info addItemTocart" 
+										data-id="<?= $row->id?>" 
+										data-name="<?= $row->title?>"
+										data-price="<?= $row->price_before ?>"
+										data-image="<?= URL . $row->image?>">
+											<span class="ti-bag"></span>
+											<p class="hover-text">add to bag</p>
+											
+										</a>
 									<a href="" class="social-info">
 										<span class="lnr lnr-heart"></span>
 										<p class="hover-text">Wishlist</p>
@@ -266,10 +254,10 @@
 										<span class="lnr lnr-sync"></span>
 										<p class="hover-text">compare</p>
 									</a>
-									<a href="" class="social-info">
-										<span class="lnr lnr-move"></span>
-										<p class="hover-text">view more</p>
-									</a>
+									<a href="<?= URL . 'product/Product/'.$row->id?>" class="social-info">
+											<span class="lnr lnr-move"></span>
+											<p class="hover-text">view more</p>
+										</a>
 								</div>
 							</div>
 						</div>
@@ -290,66 +278,52 @@
 				<div class="col-lg-6 no-padding exclusive-left">
 					<div class="row clock_sec clockdiv" id="clockdiv">
 						<div class="col-lg-12">
+						
+						
 							<h1>Exclusive Hot Deal Ends Soon!</h1>
 							<p>Who are in extremely love with eco friendly system.</p>
 						</div>
 						<div class="col-lg-12">
 							<div class="row clock-wrap">
 								<div class="col clockinner1 clockinner">
-									<h1 class="days">150</h1>
-									<span class="smalltext">Days</span>
+									<h1 class="days"><?php echo $days?></h1>
+									<span class="smalltext">days</span>
 								</div>
 								<div class="col clockinner clockinner1">
-									<h1 class="hours">23</h1>
+									<h1 class="hours"><?php echo $hours?></h1>
 									<span class="smalltext">Hours</span>
 								</div>
 								<div class="col clockinner clockinner1">
-									<h1 class="minutes">47</h1>
+									<h1 class="minutes"><?php echo $minutes?></h1>
 									<span class="smalltext">Mins</span>
 								</div>
 								<div class="col clockinner clockinner1">
-									<h1 class="seconds">59</h1>
+									<h1 class="seconds"><?php echo $seconds?></h1>
 									<span class="smalltext">Secs</span>
 								</div>
 							</div>
 						</div>
 					</div>
-					<a href="" class="primary-btn">Shop Now</a>
+					<a href="http://localhost/estore/product/Catagory/" class="primary-btn">Shop Now</a>
 				</div>
 				<div class="col-lg-6 no-padding exclusive-right">
 					<div class="active-exclusive-product-slider">
 						<!-- single exclusive carousel -->
+						<?php  foreach($allDeals as $deal):?>
 						<div class="single-exclusive-slider">
-							<img class="img-fluid" src="img/product/e-p1.png" alt="">
+							<img class="img-fluid" src="<?php echo $deal->products_image?>" alt="">
 							<div class="product-details">
 								<div class="price">
-									<h6>$150.00</h6>
-									<h6 class="l-through">$210.00</h6>
+									<h6><?php echo $deal->products_after?></h6>
+									<h6 class="l-through"><?php echo $deal->products_before?></h6>
 								</div>
-								<h4>addidas New Hammer sole
-									for Sports person</h4>
-								<div class="add-bag d-flex align-items-center justify-content-center">
-									<a class="add-btn" href=""><span class="ti-bag"></span></a>
-									<span class="add-text text-uppercase">Add to Bag</span>
-								</div>
+								<h4><?php echo $deal->products_name?></h4>
+							
+							
+								
 							</div>
 						</div>
-						<!-- single exclusive carousel -->
-						<div class="single-exclusive-slider">
-							<img class="img-fluid" src="img/product/e-p1.png" alt="">
-							<div class="product-details">
-								<div class="price">
-									<h6>$150.00</h6>
-									<h6 class="l-through">$210.00</h6>
-								</div>
-								<h4>addidas New Hammer sole
-									for Sports person</h4>
-								<div class="add-bag d-flex align-items-center justify-content-center">
-									<a class="add-btn" href=""><span class="ti-bag"></span></a>
-									<span class="add-text text-uppercase">Add to Bag</span>
-								</div>
-							</div>
-						</div>
+				<?php endforeach;?>
 					</div>
 				</div>
 			</div>
@@ -361,21 +335,11 @@
 	<section class="brand-area section_gap">
 		<div class="container">
 			<div class="row">
+<?php foreach($allBrands as $brand):?>
 				<a class="col single-img" href="#">
-					<img class="img-fluid d-block mx-auto" src="img/brand/1.png" alt="">
+					<img class="img-fluid d-block mx-auto" src="<?php echo $brand->image?>" alt="">
 				</a>
-				<a class="col single-img" href="#">
-					<img class="img-fluid d-block mx-auto" src="img/brand/2.png" alt="">
-				</a>
-				<a class="col single-img" href="#">
-					<img class="img-fluid d-block mx-auto" src="img/brand/3.png" alt="">
-				</a>
-				<a class="col single-img" href="#">
-					<img class="img-fluid d-block mx-auto" src="img/brand/4.png" alt="">
-				</a>
-				<a class="col single-img" href="#">
-					<img class="img-fluid d-block mx-auto" src="img/brand/5.png" alt="">
-				</a>
+				<?php endforeach;?>
 			</div>
 		</div>
 	</section>
@@ -395,125 +359,34 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-9">
-					<div class="row">
-						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r1.jpg" alt=""></a>
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
+				<div class="row">
+					<?php foreach($allWeeks as $week):?>
+							<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+									<div class="single-related-product d-flex">
+										<a href="<?= URL . 'product/Product/'. $week->product_id?>"><img src= <?php echo $week->products_image?> width = "70" height = "70" alt=""></a>
+										<div class="desc">
+											<a href="<?= URL . 'product/Product/'. $week->product_id?>" class="title"><?php echo $week->products_name?></a>
+											<div class="price">
+												<h6><?php echo $week->products_after?></h6>
+												<h6 class="l-through"><?php echo $week->products_before?></h6>
+											</div>
+										</div>
 									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r2.jpg" alt=""></a>
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r3.jpg" alt=""></a>
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r5.jpg" alt=""></a>
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r6.jpg" alt=""></a>
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r7.jpg" alt=""></a>
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6">
-							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r9.jpg" alt=""></a>
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6">
-							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r10.jpg" alt=""></a>
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6">
-							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r11.jpg" alt=""></a>
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
 				</div>
-				<div class="col-lg-3">
-					<div class="ctg-right">
-						<a href="#" target="_blank">
-							<img class="img-fluid d-block mx-auto" src="img/category/c5.jpg" alt="">
-						</a>
-					</div>
-				</div>
+				<?php endforeach;?>
+				
 			</div>
+			
+				
+		</div>
+		<div class="col-lg-3">
+						<div class="ctg-right">
+							<a href="#" target="_blank">
+								<img class="img-fluid d-block mx-auto" src="img/category/c5.jpg" alt="">
+							</a>
+						</div>
+				</div>
 		</div>
 	</section>
+	
 	<!-- End related-product Area -->

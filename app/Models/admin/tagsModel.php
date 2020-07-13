@@ -77,4 +77,11 @@ class tagsModel{
             return false;
         }
     }
+
+    public function getCategory()
+    {
+     $this->db->query("SELECT * FROM categories ");
+     $result = $this->db->All();
+     return $result;
+    }
 }

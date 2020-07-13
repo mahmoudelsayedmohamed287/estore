@@ -4,8 +4,11 @@ include "app/Models/admin/productModel.php";
 class ProductController
 {
     private $controller;
+   
     public function __construct(){
         $this->controller = new productModel();
+        // put all product inside constructor to visable in all function
+       
 
     }
 
@@ -23,25 +26,38 @@ class ProductController
       $this->render('admin/products/editproduct',compact( 'rows'));
     }
     
+
+
  
-    public function delete($id){
+    public function delete($id)
+    {
             $this->controller->deleteModel($id);
-            header('Location: ' . $_SERVER['HTTP_REFERER']);
-        }
+            $rows = $this->controller->getAll();
+            $this->render('admin/products/allProduct',compact('rows'));
+    }
 
-   public function create(){
 
-      $this->render('admin/products/addProduct');
+
+
+   public function create()
+   {
+      $cats = $this->controller->getCat();
+      $this->render('admin/products/addProduct',compact('cats'));
 
       }
   
 public function add(){
+$attributes = [];
+
+
+$attributes  = array_combine($_POST['key'] , $_POST['value']);
+
 
   if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $image = $_FILES['mainimg']['name'];
     $target = 'img/product/'.basename($_FILES['mainimg']['name']);
     $img = $_FILES['img']['name'];
-      $latest = $_POST['order'];
+    $latest = $_POST['order'];
     $data = [
       
       'title' => $_POST['title'],
@@ -51,67 +67,108 @@ public function add(){
       'specs' => $_POST['specs'],
       'notes' => $_POST['notes'],
       'status' => $_POST['status'],
-      'attributes' => $_POST['attributes'],
+      'attributes' => json_encode($attributes),
       'quantity' => $_POST['quantity'],
       'smalldescription' => $_POST['smalldescription'],
+      'category' => $_POST['category'],
       'img' => $target,
-      'order' => $latest,
-      'images' => serialize($img) 
+      'images' => serialize($img),
+      'order' => $latest
+       
       
         ];
         
-      $this->controller->add($data);
+
+     if( $this->controller->add($data)){
       move_uploaded_file($_FILES['mainimg']['tmp_name'], $target);
-      header('Location: ' . $_SERVER['HTTP_REFERER']);
+      return  $this->index();
     
      
 
 
 
     }else{
-      $data = [];
-      $rows =  $this->controller->getAll();
-      $this->render('admin/products/allproduct', compact('rows'));
+      return  $this->index();
 
     }
 
 
+} 
 }
 
 public function update($id){
+  $attributes  = array_combine($_POST['key'] , $_POST['value']);
+  $target = 'img/product/';
 
-  if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $image = $_FILES['mainimg']['name'];
-       $target = 'img/product/'.basename($_FILES['mainimg']['name']);
+  if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $data = [
+               'title' => $_POST['title'],
+               'price_before' => $_POST['pricebefore'],
+               'price_after' => $_POST['priceafter'],
+               'description' => $_POST['description'],
+               'specs' => $_POST['specs'],
+               'notes' => $_POST['notes'],
+               'status' => $_POST['status'],
+               'attrubites' => json_encode($attributes),
+               'quantity' => $_POST['quantity'],
+               'small_description' => $_POST['smalldescription'],
+               'latest' => $_POST['order']
+              
+                 ];
 
-      $data = [
-          'title' => $_POST['title'],
-          'price_before' => $_POST['pricebefore'],
-          'price_after' => $_POST['priceafter'],
-          'description' => $_POST['description'],
-          'specs' => $_POST['specs'],
-          'notes' => $_POST['notes'],
-          'status' => $_POST['status'],
-          'attributes' => $_POST['attributes'],
-          'quantity' => $_POST['quantity'],
-          'small_description' => $_POST['smalldescription'],
-          'img' => $target,
-          'order' => $_POST['order']
-            ];
 
-     $this->controller->edit($id,$data);
-     move_uploaded_file($_FILES['mainimg']['tmp_name'], $target);
-     header('Location: ' . $_SERVER['HTTP_REFERER']);
-  
-  }else{
- $rows =  $this->controller->getById($id);
-  $data = [];
+        /**
+         * check if main image exsits and push it into array 
+         */
+       
+         if(!empty($_FILES['mainimg']['name'])){
+           $target = 'img/product/'.$_FILES['mainimg']['name'];
+          $imageFileType = strtolower(pathinfo($target,PATHINFO_EXTENSION));
+          if ($_FILES['mainimg']['size'] > 500000) {
+            die( "Sorry, your file is too large.");
+           
+          }
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" ) {
+        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+      
+        }
 
- $this->render('admin/settings/allsetting',$data);
-  }
+          
+            $data['image'] = 'img/product/'.$_FILES['mainimg']['name'];
+            move_uploaded_file($_FILES['mainimg']['tmp_name'], $target .basename($_FILES['mainimg']['name']) );
+       
+        }
+
+        if(count($_FILES['img']['name']) > 1){
+         foreach($_FILES['img']['name'] as $im){
+          $target1[] = 'img/product/'. $im;
+         }
+         foreach( $target1 as $targ){
+          $imageFileType = strtolower(pathinfo($targ,PATHINFO_EXTENSION));
+         }
+          if ($_FILES["img"]["size"] > 5000) {
+            die("Sorry, your file is too large.");
+           
+           
+          }
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" ) {
+        die( "Sorry, only JPG, JPEG, PNG & GIF files are allowed.");
+      
+        }
+            $data['image_group'] = serialize($_FILES['img']['name']);
+
+            // move_uploaded_file($_FILES['img']['tmp_name'], $target .basename($_FILES['img']['name']) );
+      }
+          
+          $this->controller->edit($id,$data);
+          $this->index();
 
 
 }
+}
+
 
 
 public function render($view, $varible = [])

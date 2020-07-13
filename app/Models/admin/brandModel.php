@@ -5,13 +5,13 @@ include 'app/libaray/DB.php';
 
 class brandModel{
     private $db;
+    private $table = "brands";
 public function __construct(){
 
     $this->db = new Database();
 
 }
 public function add($data){
-		
     $this->db->query("INSERT INTO brands(
                 title, notes,image)
          values
@@ -25,8 +25,11 @@ public function add($data){
     }else {
         return false;
     }
-
+   
 }
+
+
+
 public function getAll(){
    $this->db->query("SELECT * FROM brands order by id DESC");
    $result =  $this->db->All();
@@ -53,19 +56,39 @@ public function getById($id){
 }
 
 public function edit($id,$data){
+    if(!empty($data['image'])){
     $this->db->query("UPDATE brands SET 
                                         title = :title,
-                                       notes = :notes
+                                       notes = :notes,
+                                       image = :image
                                         WHERE id = :id" );
                     
       $this->db->bind(':title', $data['title']);
       $this->db->bind(':notes', $data['notes']);
+      $this->db->bind(':image', $data['image']);
       $this->db->bind(':id', $id);
     if ($this->db->execute()){
         return true;
     }else {
         return false;
     }
+
+}else{
+    $this->db->query("UPDATE brands SET 
+    title = :title,
+    notes = :notes
+    WHERE id = :id" );
+    
+$this->db->bind(':title', $data['title']);
+$this->db->bind(':notes', $data['notes']);
+$this->db->bind(':id',$id);
+if ($this->db->execute()){
+return true;
+}else {
+return false;
 }
 
+
 }
+
+}}

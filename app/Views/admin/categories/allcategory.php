@@ -14,6 +14,7 @@
                         <th>ID</th>
                         <th>Tittle</th>
                         <th>description</th>
+                        <th>image</th>
                         <th>control</th>
                         
                     </tr>
@@ -25,10 +26,11 @@
                         <td><?= $row->id ?></td>
                         <td><?= $row->title ?></td>
                         <td><?= $row->description ?></td>
+                        <td><img src=<?= URL.$row->image?> alt="" width = "50" height = "50"></td>
                       
                         <td>
-                            <a  href="<?=  URL?>admin/category/edit/<?=$row->id?>" class="edit open-modal" data-toggle="modal" >Edit</a>  
-                            <a  href="<?= URL ?>admin/category/delete/<?=$row->id?>" class="delete" data-toggle="modal">Delete</a>
+                            <a  href="<?=  URL?>admin/category/edit/<?=$row->id?>" >Edit</a>  
+                            <a  href="<?= URL ?>admin/category/delete/<?=$row->id?>" >Delete</a>
                             
                             
                         </td>

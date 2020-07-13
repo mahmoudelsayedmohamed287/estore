@@ -4,7 +4,7 @@
 <br>
 <br>
 
-<form id="formAddAdderss" method="POST" action="<?php echo URL?>admin/category/update/<?=$data['id']?>">  
+<form id="formAddAdderss" method="POST"enctype="multipart/form-data" action="<?php echo URL?>admin/category/update/<?=$rows->id?>">  
 
     <div class="container">
         <div class="row">
@@ -29,8 +29,15 @@
                     <input name="description" type="text" class="form-control" value="<?= $rows->description ?>" required>
                 </div>
             </div>
-          
-            
+            <div class="col-md-8 col-xs-12">
+            <label>image *</label>
+                <br>
+            <div class="form-group label-floating is-empty">
+            <img src =<?= URL.$rows->image?> alt="" width = "50" height = "50">
+            <br>
+            <input type="file" name="mainimg" >
+            </div>
+            </div>
             <div class="col-md-12">
                 <button type="submit" class="btn btn-success" id="SubmitButton">
                             Update category 

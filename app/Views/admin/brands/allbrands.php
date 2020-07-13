@@ -24,18 +24,16 @@
                     <tr>
                         <td><?= $row->id ?></td>
                         <td><?= $row->title ?></td>
-                        <td><?= $row->image ?></td>
-                      
+                       <td><img src=<?= URL.$row->image?> alt="" width = "50" height = "50"></td>
+                        
+                        
                         <td>
-                            <a  href="<?=  URL?>admin/Brand/edit/<?=$row->id?>" class="edit open-modal" data-toggle="modal" >Edit</a>  
-                            <a  href="<?= URL ?>admin/Brand/delete/<?=$row->id?>" class="delete" data-toggle="modal">Delete</a>
+                            <a  href="<?=  URL?>admin/Brand/edit/<?=$row->id?>"  >Edit</a>  
+                            <a  href="<?= URL ?>admin/Brand/delete/<?=$row->id?>" >Delete</a>
                             
                             
                         </td>
-                        
-                        
                        
-
                       
                     </tr>
                     <?php 

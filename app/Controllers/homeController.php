@@ -14,10 +14,21 @@ class homeController {
     }
     public function index()
     {
+      // $rows =  $this->model->retrive();
      
+      // $settings = [
+      //   "menu" => $this->model->retriveMenu(),
+      //   "blog_childern" => $this->model->retriveMenuChild()
+        
+      // ];
      $rows =  $this->model->getAll();
      $allLatest = $this->model->getLatest();
-    $this->render('home',compact('rows','allLatest'));
+     $allDeals = $this->model->getDeals();
+     $allWeeks = $this->model->getWeek();
+     $footer = $this->model->getSetting();
+     $allCategory = $this->model->getCategory();
+     $allBrands =  $this->model->getBrand();
+    $this->render('home',compact('rows','allLatest','allDeals','allWeeks','allCategory','allBrands','footer'));
 
    
     }

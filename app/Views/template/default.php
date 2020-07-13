@@ -36,6 +36,7 @@
 $home = new sqlStatment();?>
 <?php $meuns =  $home->all("menu") ?>
 <?php $meuns_childerns =  $home->all("menu_children") ?>
+<?php $footer = $home->all("setting")?>
 
 
 	
@@ -70,6 +71,13 @@ $home = new sqlStatment();?>
 .StripeElement--webkit-autofill {
     background-color: #fefde5 !important;
 }
+
+.delete-whichlist{
+	background: #6b5c5c;
+}
+.whichlistColor span {
+	background-color: #000 !important;
+}
 .form-row{
     display: block;
   }
@@ -82,7 +90,7 @@ $home = new sqlStatment();?>
 			<nav class="navbar navbar-expand-lg navbar-light main_box">
 				<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
-					<a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
+					<a class="navbar-brand logo_h" href="<?php echo URL ?>"><img src="img/logo.png" alt=""></a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="icon-bar"></span>
@@ -96,7 +104,7 @@ $home = new sqlStatment();?>
 								
 								<?php foreach($meuns as  $setting)  :   //active ?> 
 									<li class="nav-item submenu dropdown"><!--  class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" -->
-										<a href="<?= $setting->link ?>" class="nav-link dropdown-toggle" ><?= strtoupper($setting->title)?></a> 
+										<a href="<?php echo $setting->link ?>" class="nav-link dropdown-toggle" ><?= strtoupper($setting->title)?></a> 
 										<ul class="dropdown-menu">
 											<?php foreach($meuns_childerns as  $child)  :  ?> 
 												<?php  if($child->menu_id === $setting->id) :?>
@@ -116,12 +124,15 @@ $home = new sqlStatment();?>
 											</ul>
 										</a> 
 									</li> 
+										<?php if($_SESSION['role'] == 1 ) :?>
+									     	<li class="nav-item"><a class="nav-link" href="<?= URL.  'admin/index' ?> ">Admin Panle</a></li>
+										<?php endif;?>
 								<?php else  :?>
 								<li class="nav-item"><a class="nav-link" href="<?= URL.  'user/login' ?> ">login</a></li>
 								<?php endif; ?> 
 						  </ul>
 						  <ul class="nav navbar-nav navbar-right">
-							<li class="nav-item"><a href="<?= URL.  'product/cart' ?>" class="cart"><span class="ti-bag bag-total"></span></a></li>
+							<li class="nav-item"><a href="<?php echo URL .'product/cart' ?>" class="cart"><span class="ti-bag bag-total"></span></a></li>
 							<li class="nav-item">
 							   <button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
 							</li>
@@ -131,8 +142,8 @@ $home = new sqlStatment();?>
 		  </nav>
 		<div class="search_input" id="search_input_box">
 			<div class="container">
-				<form class="d-flex justify-content-between">
-					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+				<form  class="d-flex justify-content-between"  id="searchForm">
+					<input id="s"  type="text" class="form-control"  placeholder="Search Here">
 					<button type="submit" class="btn"></button>
 					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
 				</form>
@@ -150,17 +161,17 @@ $home = new sqlStatment();?>
 			<div class="row">
 				<div class="col-lg-3  col-md-6 col-sm-6">
 					<div class="single-footer-widget">
+					<?php foreach($footer as $foot):?>
 						<h6>About Us</h6>
 						<p>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore
-							magna aliqua.
+							<?php echo $foot->abouts?>
 						</p>
 					</div>
 				</div>
 				<div class="col-lg-4  col-md-6 col-sm-6">
 					<div class="single-footer-widget">
 						<h6>Newsletter</h6>
-						<p>Stay update with our latest</p>
+						<p><?php echo $foot->newsletter_email?></p>
 						<div class="" id="mc_embed_signup">
 
 							<form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
@@ -206,11 +217,12 @@ $home = new sqlStatment();?>
 						<h6>Follow Us</h6>
 						<p>Let us be social</p>
 						<div class="footer-social d-flex align-items-center">
-							<a href="#"><i class="fa fa-facebook"></i></a>
-							<a href="#"><i class="fa fa-twitter"></i></a>
+							<a href="<?php echo $foot->facebook?>"><i class="fa fa-facebook"></i></a>
+							<a href="<?php echo $foot->twitter?>"><i class="fa fa-twitter"></i></a>
 							<a href="#"><i class="fa fa-dribbble"></i></a>
 							<a href="#"><i class="fa fa-behance"></i></a>
 						</div>
+							<?php endforeach;?>
 					</div>
 				</div>
 			</div>
@@ -225,6 +237,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<!-- End footer Area -->
 
 	<script src="<?= URL ?>js/vendor/jquery-2.2.4.min.js"></script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
 	 crossorigin="anonymous"></script>
 	<script src="<?= URL ?>js/vendor/bootstrap.min.js"></script>
@@ -240,13 +253,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 	<script src="<?= URL ?>js/gmaps.min.js"></script>
 	<script src="<?= URL ?>js/main.js"></script>
-	<script src="<?= URL ?>js/cart.js"></script>
-	<script src="<?= URL ?>js/karma.js"></script>
-	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 	<script src="https://js.stripe.com/v3/"></script>
-	<script src="<?= URL ?>js/search.js"></script>
+	<script src="<?= URL ?>js/cart.js"></script>
+	<script src="<?= URL ?>js/whichlist.js"></script>
 	<script src="<?= URL ?>js/charge.js"></script>
-	
+	<script src="<?= URL ?>js/karma.js"></script>
 
 
 </body>

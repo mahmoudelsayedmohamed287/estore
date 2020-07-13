@@ -16,7 +16,10 @@
                         <th>Tittle</th>
                         <th>Price Befor</th>
                         <th>Price After</th>
-                        <th>latest</th>
+                        <th>image</th>
+                        <th>image_group</th>
+                        <th>Avaliable IN Store</th>
+                        <th>order</th>
                         <th>control</th>
                         
                     </tr>
@@ -29,10 +32,27 @@
                         <td><?= $row->title ?></td>
                         <td><?= $row->price_before ?></td>
                         <td><?= $row->price_after ?></td>
-                        <td><?= $row->latest ?></td>
+                        <td><img src=<?= URL.$row->image?> alt="" width = "50" height = "50"></td>
                         <td>
-                            <a  href="<?=  URL?>admin/product/edit/<?=$row->id?>" class="edit open-modal" data-toggle="modal" >Edit</a>  
-                            <a  href="<?= URL ?>admin/product/delete/<?=$row->id?>" class="delete" data-toggle="modal">Delete</a>
+                        <?PHP foreach(unserialize($row->image_group) as $img):?>
+                         <img src="<?= URL .'img/product/'.$img?>" alt="" width = "50" height = "50">
+                         <?php endforeach;?>
+                        </td>
+                        <td><?= $row->quantity ?></td>
+                        <td><?php if( $row->latest==1 ){
+                            echo "latest";
+                        }elseif($row->latest==0){
+                            echo "none";
+
+                        }else{
+                            echo "coming";
+                        }
+                         ?>
+                        
+                        </td>
+                        <td>
+                            <a  href="<?=  URL?>admin/product/edit/<?=$row->id?>" >Edit</a>  
+                            <a  href="<?= URL ?>admin/product/delete/<?=$row->id?>">Delete</a>
                             
                             
                         </td>
